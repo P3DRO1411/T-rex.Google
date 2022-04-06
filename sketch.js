@@ -6,6 +6,14 @@ var ground_invisivel;
 var cloud;
 var cloud_image;
 var numero_aleatorio;
+var numero_aleatorio2;
+var cactos;
+var cactos_image;
+var cactos_image2;
+var cactos_image3;
+var cactos_image4;
+var cactos_image5;
+var cactos_image6;
 
 
 
@@ -13,7 +21,12 @@ function preload(){
   trex_animation=loadAnimation("trex1.png","trex3.png","trex4.png");
   ground_image=loadImage("ground2.png");
   cloud_image=loadImage("cloud.png");
-
+  cactos_image=loadImage("obstacle1.png");
+  cactos_image2=loadImage("obstacle2.png");
+  cactos_image3=loadImage("obstacle3.png");
+  cactos_image4=loadImage("obstacle4.png");
+  cactos_image5=loadImage("obstacle5.png");
+  cactos_image6=loadImage("obstacle6.png");
 }
 
 function pular(){
@@ -41,14 +54,47 @@ function chao_se_mexe(){
 
 } 
 
+function criar_cactos(){
+  if(frameCount%100===0){
+    cactos=createSprite(620,173,10,10);
+    cactos.velocityX=-4;
+    cactos.depth=1;
+    cactos.lifetime=170;
+    cactos.scale=0.70;
+    switch(numero_aleatorio2){
+      case 1:
+        cactos.addImage(cactos_image);
+        break;
+      case 2:
+        cactos.addImage(cactos_image2);  
+        break;
+       case 3:
+        cactos.addImage(cactos_image3);
+        break;
+       case 4:
+        cactos.addImage(cactos_image4);    
+        break;
+       case 5:
+         cactos.addImage(cactos_image5);
+        break;
+      case 6:
+        cactos.addImage(cactos_image6);     
+        break; 
+    }
+  }
+  
+}
+
+
+
+
 function criar_nuvens(){
-  if(frameCount%60===0){
+  if(frameCount%200===0){
     cloud=createSprite(650,numero_aleatorio,15,10);
     cloud.addImage("nuvens", cloud_image);
-    cloud.velocityX=-5;
+    cloud.velocityX=-2;
     cloud.depth=1;
-    console.log(trex.depth,cloud.depth);
-
+    cloud.lifetime=350;
   }
 
 }
@@ -89,4 +135,7 @@ function draw(){
   ver_o_mouse();
   criar_nuvens();
   numero_aleatorio=Math.round(random(20,80));
+  numero_aleatorio2=Math.round(random(1,6));
+  criar_cactos();
+
 }
