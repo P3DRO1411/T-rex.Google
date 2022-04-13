@@ -78,14 +78,14 @@ function criar_cactos(){
       case 2:
         cactos.addImage(cactos_image2);  
         break;
-       case 3:
+      case 3:
         cactos.addImage(cactos_image3);
         break;
-       case 4:
+      case 4:
         cactos.addImage(cactos_image4);    
         break;
-       case 5:
-         cactos.addImage(cactos_image5);
+      case 5:
+        cactos.addImage(cactos_image5);
         break;
       case 6:
         cactos.addImage(cactos_image6);     
@@ -110,9 +110,6 @@ function criar_nuvens(){
 
 function ver_o_mouse(){
   text("X:"+ mouseX+" | Y:"+ mouseY,mouseX,mouseY);
-
-
-
 }
 
 function setup(){
@@ -135,7 +132,8 @@ function setup(){
   reset.addImage("reset",reset_image);
   game_over.visible=false;
   reset.visible=false;
-
+  trex.debug=true;
+  trex.setCollider("circle",0,0,44);
 }
 
 function inicio(){
@@ -169,6 +167,8 @@ function fim(){
   trex.changeAnimation("morto",trex_morreu);
   game_over.visible=true;
   reset.visible=true;
+  grupo_cactos.setLifetimeEach(-1);
+  grupo_nuvens.setLifetimeEach(-1);
 }
 
 function draw(){ 
