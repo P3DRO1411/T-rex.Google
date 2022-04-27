@@ -26,6 +26,11 @@ var game_over;
 var reset;
 var game_over_image;
 var reset_image;
+var die_song;
+var point_song;
+var jump_song;
+var pontos=0;
+var aux;
 
 
 function preload(){
@@ -42,11 +47,15 @@ function preload(){
   trex_morreu=loadAnimation("trex_collided.png");
   game_over_image=loadImage("gameOver.png");
   reset_image=loadImage("restart.png");
+  die_song=loadSound("die.mp3");
+  point_song=loadSound("checkPoint.mp3");
+  jump_song=loadSound("jump.mp3");
 }
 
 function pular(){
   if(keyDown("space") && trex.y>=161){
     trex.velocityY=-8;
+    jump_song.play();
 
   } else{
     trex.velocityY=trex.velocityY+0.5;
@@ -63,6 +72,14 @@ function chao_se_mexe(){
 
 } 
 
+function ponto(){
+  pontos=pontos+1
+  if(pontos%100===0 && pontos!==0){
+    point_song.play();
+  }
+}
+
+
 function criar_cactos(){
   if(frameCount%100===0){
     cactos=createSprite(620,173,10,10);
@@ -71,6 +88,7 @@ function criar_cactos(){
     cactos.depth=1;
     cactos.lifetime=170;
     cactos.scale=0.70;
+    cactos.debug=true;
     switch(numero_aleatorio2){
       case 1:
         cactos.addImage(cactos_image);
@@ -83,12 +101,14 @@ function criar_cactos(){
         break;
       case 4:
         cactos.addImage(cactos_image4);    
+        cactos.scale(0.5);
         break;
       case 5:
         cactos.addImage(cactos_image5);
         break;
       case 6:
         cactos.addImage(cactos_image6);     
+        cactos.scale(0.5);
         break; 
     }
     grupo_cactos.add(cactos);
@@ -140,6 +160,7 @@ function inicio(){
   if(keyDown("space")){
     estados_de_jogo=JOGANDO;
     pular();
+    aux=frameCount;
   }
 }
 
@@ -154,6 +175,7 @@ function jogando(){
   trex.changeAnimation("correndo",trex_animation);
   if(trex.isTouching(grupo_cactos)){
     estados_de_jogo=FIM;
+    die_song.play();
   }
 
 
@@ -169,7 +191,26 @@ function fim(){
   reset.visible=true;
   grupo_cactos.setLifetimeEach(-1);
   grupo_nuvens.setLifetimeEach(-1);
+  if(mousePressedOver(reset)){
+    reinicia();
+
+
+  }
+
 }
+
+function reinicia(){
+  estados_de_jogo=INICIO;
+  reset.visible=false;
+  game_over.visible=false;
+  grupo_cactos.destroyEach();
+  trex.y=170;
+  trex.changeAnimation("parado",trex_parado);
+  pontos=0;
+  frameCount=0;
+  grupo_nuvens.destroyEach();
+}
+
 
 function draw(){ 
   background("white");
@@ -177,8 +218,6 @@ function draw(){
   ver_o_mouse();
   if(estados_de_jogo===FIM){
     fim();
-
-
   }
   
   if(estados_de_jogo===INICIO){
@@ -186,5 +225,9 @@ function draw(){
   }
   if(estados_de_jogo===JOGANDO){
     jogando();
+    ponto();
   }
+  textFont("Minecraft.ttf");
+  text(pontos,477,24);
+
 }
